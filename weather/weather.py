@@ -9,8 +9,8 @@ def get_weather_forecast(city):
         # response.raise_for_status()
         data = response.json()
         if data['cod'] != 200:
-            print(f"Could not get weather forecast for {city} , Weather API ERROR - {data['message']}")
-            return None
+
+            return f"Could not get weather forecast for {city} , Weather API ERROR - {data['message']}"
         weather_data = {}
         weather_data['description'] = data['weather'][0]['description']
         weather_data['temp_min'] = data['main']['temp_min']
@@ -19,12 +19,11 @@ def get_weather_forecast(city):
         weather_data['wind'] = data['wind']
         weather_data['temp_curr'] = data['main']['temp']
         weather_data['city'] = data['name']
-        return weather_data
-
+        return f"Current temperature in {city} is {weather_data['temp_curr']} Kelvin. Temperature in {city} will range from {weather_data['temp_min']} to {weather_data['temp_max']} Kelvin. Wind speed is {weather_data['wind']['speed']} m/s. Humidity is {weather_data['humidity']}%. Weather Forcast is {weather_data['description']}. "
 
     except requests.exceptions.RequestException as e:
-        print("Error occurred while fetching weather data:", str(e))
-        return None
+        
+        return f"Error occurred while fetching weather data: {str(e)}"
 
 # %%
 res = get_weather_forecast("London")
@@ -40,10 +39,8 @@ def main():
 
     try:
         city = str(sys.argv[1])
-        result = get_weather_forecast(city)
-        if result is None:
-            return
-        print(f"Current temperature in {city} is {result['temp_curr']} Kelvin. Temperature in {city} will range from {result['temp_min']} to {result['temp_max']} Kelvin. Wind speed is {result['wind']['speed']} m/s. Humidity is {result['humidity']}%. Weather Forcast is {result['description']}. ")
+        weather_data = get_weather_forecast(city)
+        print(weather_data)
         
     except ValueError:
         print("Invalid input. Please provide valid city name.")

@@ -17,3 +17,4 @@ To run the CLI, run:
 ```bash
 weatherat <city_name>
 ```
+in terminal
